@@ -14,16 +14,24 @@ function checkArray(number, array) {
     return false;
 }
 
+setInterval(function () {
+    let num = getnum.getRandomInt(1, 50);
+    while (checkArray(num, netWorkNum)) {
+        console.log('重設數字');
+        num = getnum.getRandomInt(1, 50);
+        if (netWorkNum.length >= 50) {
+            netWorkNum=[];
+            break;
+        }
+    }
+    netWorkNum.push(num);
+    console.log(netWorkNum);
+}, 1000)
+
 function delayed(ctx, ms) {
     return new Promise((resolve, reject) => {
         setTimeout(function () {
-            let num = getnum.getRandomInt(1, 50);
-            while (checkArray(num, netWorkNum)) {
-                // console.log('重設數字');
-                num = getnum.getRandomInt(1, 50);
-            }
-            ctx.body = num;
-            netWorkNum.push(num);
+            ctx.body = netWorkNum;
             console.log(netWorkNum);
             resolve();
         }, ms)
@@ -31,7 +39,25 @@ function delayed(ctx, ms) {
 }
 
 networknum.get('/', async (ctx) => {
-    await delayed(ctx, 1000);
+    await delayed(ctx, 5000);
 })
 
 module.exports = networknum;
+
+
+// 參考用
+// function delayed(ctx, ms) {
+//     return new Promise((resolve, reject) => {
+//         setInterval(function () {
+//             let num = getnum.getRandomInt(1, 50);
+//             while (checkArray(num, netWorkNum)) {
+//                 // console.log('重設數字');
+//                 num = getnum.getRandomInt(1, 50);
+//             }
+//             ctx.body = num;
+//             netWorkNum.push(num);
+//             console.log(netWorkNum);
+//             resolve();
+//         }, ms)
+//     })
+// }
