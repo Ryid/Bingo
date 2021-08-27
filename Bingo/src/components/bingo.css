@@ -21,6 +21,7 @@ button {
     width: 100px;
     height: 60px;
     margin: 20px auto;
+    cursor: pointer;
 }
 
 .victory {
@@ -36,4 +37,5 @@ button {
     color: rgb(216, 17, 50);
     background-image: url("../assets/success.png");
     background-size: cover;
+    cursor: pointer;
 }

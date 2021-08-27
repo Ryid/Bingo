@@ -5,7 +5,6 @@ const controller = require('../utils/controller.js');
 
 senduser.use(bodyparser());
 
-let userList=[];
 
 senduser.post('/', async (ctx) => {
     console.log(ctx.request.body);
@@ -15,6 +14,7 @@ senduser.post('/', async (ctx) => {
 
     if (username != '') {
         controller.postUser(username);
+        ctx.body = username;
     }
 })
 

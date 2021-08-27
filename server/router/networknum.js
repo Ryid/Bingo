@@ -1,6 +1,7 @@
 const Router = require('koa-router');
 const networknum = new Router();
 const randomModel = require('../utils/bingoUtil');
+const controller = require('../utils/controller');
 
 let netWorkNum = [];
 let getnum = new randomModel()
@@ -16,8 +17,15 @@ function checkArray(number, array) {
     return false;
 }
 
-const game=function gameStart() {
+// 每10秒產生數字
+const game = function gameStart() {
     setInterval(function () {
+        if (controller.checkWinner()) {
+            clearInterval(game);
+            let name = controller.getWinnerName();
+            netWorkNum = `獲勝者 ${name}!!!`;
+            return true;
+        }
         if (netWorkNum.length >= 50) return;
         let num = getnum.getRandomInt(1, 50);
         while (checkArray(num, netWorkNum) && netWorkNum.length < 49) {
@@ -29,20 +37,7 @@ const game=function gameStart() {
     }, 5000)
 }
 
-// const game=new Promise((resolve,reject)=>{
-//     setTimeout(function () {
-//         if (netWorkNum.length >= 50) return;
-//         let num = getnum.getRandomInt(1, 50);
-//         while (checkArray(num, netWorkNum) && netWorkNum.length < 49) {
-//             console.log('重設數字');
-//             num = getnum.getRandomInt(1, 50);
-//         }
-//         netWorkNum.push(num);
-//         console.log(netWorkNum);
-//         resolve(num);
-//     }, 3000)
-// })
-
+// 過X秒後給client陣列
 function delayed(ctx, ms) {
     return new Promise((resolve, reject) => {
         setTimeout(function () {
@@ -52,14 +47,6 @@ function delayed(ctx, ms) {
         }, ms)
     })
 }
-
-// const delayed=new Promise((resolve, reject) => {
-//         setTimeout(function () {
-//             console.log(netWorkNum);
-//             resolve(netWorkNum);
-//         }, 5000)
-//     })
-
 
 
 networknum.get('/', async (ctx) => {
@@ -72,7 +59,7 @@ networknum.get('/', async (ctx) => {
     // let rel=await Promise.race([game(),delayed(ctx,5000)])
     // let rel=await Promise.race([game,delayed])
     // ctx.body=rel;
-    
+
 })
 
 module.exports = networknum;

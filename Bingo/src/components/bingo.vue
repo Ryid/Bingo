@@ -174,7 +174,11 @@ export default {
 
     // 獲勝
     winner() {
-      alert("winner!");
+      // alert("winner!");
+      axios.post('http://localhost:3000/check',{
+        username: this.username,
+        indices: this.indices
+      })
     },
   },
   created() {
