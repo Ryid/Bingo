@@ -5,14 +5,14 @@ const db = require('../utils/db')
 
 const getChatMsg = require('./getChatMsg')
 const getUser = require('./getUser')
-const sendMsg = require('./sendMsg')
+const senduser = require('./senduser')
 const check = require('./check');
 const generatenum=require('./generatenum');
 const networknum=require('./networknum');
 
 router.use('/getChatMsg', getChatMsg.routes(), getChatMsg.allowedMethods());
 router.use('/getUser', getUser.routes(), getUser.allowedMethods());
-router.use('/sendMsg', sendMsg.routes(), sendMsg.allowedMethods());
+router.use('/senduser', senduser.routes(), senduser.allowedMethods());
 router.use('/check', check.routes(), check.allowedMethods());
 router.use('/generatenum',generatenum.routes(),generatenum.allowedMethods());
 router.use('/networknum',networknum.routes(),networknum.allowedMethods());

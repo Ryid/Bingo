@@ -2,8 +2,22 @@
   <div class="bingo">
     <h1>Bingo</h1>
     <table id="board"></table>
-    <button @click="getServerNum()">測試按鈕</button>
+    <button
+      @click="
+        postUser();
+        getServerNum();
+      "
+    >
+      遊戲開始
+    </button>
     <div>{{ getNum }}</div>
+    <div class="victory" v-if="checkConnect > 1" @click="winner()">CLICK</div>
+    <input
+      type="text"
+      placeholder="請輸入使用者名稱"
+      v-model="username"
+      :disabled="disable"
+    />
   </div>
 </template>
 
@@ -13,6 +27,8 @@ import axios from "axios";
 export default {
   data() {
     return {
+      username: "",
+      disable: false,
       rows: 5,
       cols: 5,
       myNums: "",
@@ -22,9 +38,11 @@ export default {
         39, 40, 41, 42, 43, 44, 45,
       ],
       indices: [],
+      checkConnect: 0,
     };
   },
   methods: {
+    // 取得我的賓果&遊戲生成賓果
     async getMyNum() {
       try {
         let res = await axios.get("http://localhost:3000/generatenum");
@@ -33,6 +51,33 @@ export default {
         console.log(err);
       }
     },
+    async getServerNum() {
+      if (this.username !== "") {
+        await axios
+          .get("http://localhost:3000/networknum")
+          .then((res) => (this.getNum = res.data))
+          .catch((err) => console.log(err));
+        await this.getServerNum();
+      }
+    },
+
+    // 傳送使用者資料
+    postUser() {
+      if (this.username !== "") {
+        axios
+          .post("http://localhost:3000/sendUser", {
+            username: this.username,
+          })
+          .then((res) => console.log(res))
+          .catch((err) => console.log(err));
+        this.disable = true;
+      } else {
+        alert("使用者名稱不得為空!");
+        return false;
+      }
+    },
+
+    // 建造我自己的賓果卡片
     async makeBoard() {
       await this.getMyNum();
 
@@ -52,15 +97,10 @@ export default {
         }
       }
     },
-    async getServerNum() {
-      await axios
-        .get("http://localhost:3000/networknum")
-        .then((res) => (this.getNum = res.data))
-        .catch((err) => console.log(err));
-      await this.getServerNum();
-    },
+
+    // 有相符數字進行標記&確認是否連線
     clickSquare(square) {
-      console.log(square.innerHTML);
+      // console.log(square.innerHTML);
       this.getNum.filter((num) => {
         if (num == square.innerHTML) {
           square.style.backgroundColor = "crimson";
@@ -69,8 +109,9 @@ export default {
         }
       });
     },
+
+    // 如果數字重復則重新渲染
     checkArray(number, array) {
-      // console.log("Checking array for" + number);
       for (let count = 0; count < array.length; count++) {
         if (array[count] == number) {
           return true;
@@ -78,6 +119,8 @@ export default {
       }
       return false;
     },
+
+    // 檢查是否連線
     check5(i1, i2, i3, i4, i5) {
       return (
         this.checkArray(i1, this.indices) &&
@@ -88,46 +131,52 @@ export default {
       );
     },
     checkWin() {
-      console.log(this.indices);
+      // console.log(this.indices);
+      let connect = 0;
       if (this.check5(0, 1, 2, 3, 4)) {
-        console.log("Bingo!");
+        connect++;
       }
       if (this.check5(5, 6, 7, 8, 9)) {
-        console.log("Bingo!");
+        connect++;
       }
       if (this.check5(10, 11, 12, 13, 14)) {
-        console.log("Bingo!");
+        connect++;
       }
       if (this.check5(15, 16, 17, 18, 19)) {
-        console.log("Bingo!");
+        connect++;
       }
       if (this.check5(20, 21, 22, 23, 24)) {
-        console.log("Bingo!");
+        connect++;
       }
       if (this.check5(0, 5, 10, 15, 20)) {
-        console.log("Bingo!");
+        connect++;
       }
       if (this.check5(1, 6, 11, 16, 21)) {
-        console.log("Bingo!");
+        connect++;
       }
       if (this.check5(2, 7, 12, 17, 22)) {
-        console.log("Bingo!");
+        connect++;
       }
       if (this.check5(3, 8, 13, 18, 23)) {
-        console.log("Bingo!");
+        connect++;
       }
       if (this.check5(4, 9, 14, 19, 24)) {
-        console.log("Bingo!");
+        connect++;
       }
       if (this.check5(0, 6, 12, 18, 24)) {
-        console.log("Bingo!");
+        connect++;
       }
       if (this.check5(4, 8, 12, 16, 20)) {
-        console.log("Bingo!");
+        connect++;
       }
+      this.checkConnect = connect;
+    },
+
+    // 獲勝
+    winner() {
+      alert("winner!");
     },
   },
-  computed: {},
   created() {
     this.makeBoard();
     window.clickSquare = this.clickSquare;
@@ -135,18 +184,4 @@ export default {
 };
 </script>
 
-<style>
-body {
-  text-align: center;
-}
-
-.square {
-  width: 4em;
-  height: 4em;
-  border: 0.25em solid rgb(102, 0, 102);
-}
-
-table {
-  margin: auto;
-}
-</style>
+<style src="./bingo.css"></style>

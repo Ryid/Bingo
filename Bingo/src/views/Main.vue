@@ -1,39 +1,60 @@
 <template>
-    <!-- <userlist/> -->
-    <div class="user">
-        <!-- 123 -->
-    </div>
-    <bingo/>
+  
+  <div class="game">
+    <!-- <div class="user"></div> -->
+    <userlist />
+    <bingo />
+    
+  </div>
 </template>
 
 <script>
-import userlist from '@/components/userlist.vue'
-import bingo from '@/components/bingo.vue'
+import userlist from "@/components/userlist.vue";
+import bingo from "@/components/bingo.vue";
+import axios from 'axios'
 
 export default {
+  data() {
+    return {
+      username: "",
+      disable: false,
+    };
+  },
+  methods:{
+      
+  },
   components: {
     userlist,
-    bingo
+    bingo,
   },
 };
 </script>
 
 <style>
-*{
-    margin: 0;
-    padding: 0;
-    list-style: none;
+* {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
-html,body{
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    /* align-items: center; */
+/* .game {
+  position: relative;
 }
-/* .user{
-    width: 400px;
-    height: 400px;
-    border: solid 1px;
-    display: inline-block;
+
+.user {
+  position: absolute;
+  width: 200px;
+  height: 400px;
+  border: solid 1px;
+  border-radius: 10px;
+  margin: 10px 20px;
+}
+
+@media screen and (max-width: 1024px) {
+  .user {
+    margin: 20px 0;
+    bottom: -30%;
+    width: 100%;
+    height: 100px;
+  }
 } */
 </style>

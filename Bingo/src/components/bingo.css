@@ -1,0 +1,39 @@
+body {
+    text-align: center;
+}
+
+.square {
+    width: 4em;
+    height: 4em;
+    border: 0.25em solid rgb(102, 0, 102);
+}
+
+.bingo {
+    margin: 10px 0;
+}
+
+table {
+    margin: auto;
+}
+
+button {
+    padding: 20px;
+    width: 100px;
+    height: 60px;
+    margin: 20px auto;
+}
+
+.victory {
+    margin: auto;
+    width: 100px;
+    height: 100px;
+    border: solid 1px rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    box-shadow: 0 0 6px;
+    line-height: 100px;
+    font-size: 20px;
+    font-weight: 600;
+    color: rgb(216, 17, 50);
+    background-image: url("../assets/success.png");
+    background-size: cover;
+}
