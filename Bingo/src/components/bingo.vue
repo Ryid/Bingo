@@ -7,12 +7,13 @@
         postUser();
         getServerNum();
       "
+      v-if="!disable"
     >
       遊戲開始
     </button>
-    <div class="bingoNum">
-      <div v-for="num in getNum" :key="num">
-        {{ `${num < 10 ? "0" + num : num}`}}
+    <div class="bingoNums">
+      <div v-for="num in getNum" :key="num" :class="{ bingoNum : typeof getNum=='object'}">
+        {{ `${num < 10 && typeof num=='number' ? "0" + num : num}` }}
       </div>
     </div>
     <div class="victory" v-if="checkConnect > 1" @click="winner()">CLICK</div>
@@ -56,7 +57,11 @@ export default {
       }
     },
     async getServerNum() {
-      if (this.username !== "" && !this.getNum.includes("獲勝者")) {
+      if (
+        this.username !== "" &&
+        !this.getNum.includes("獲勝者") &&
+        this.getNum.length < 50
+      ) {
         await axios
           .get("http://localhost:3000/networknum")
           .then((res) => (this.getNum = res.data))
@@ -188,6 +193,9 @@ export default {
   created() {
     this.makeBoard();
     window.clickSquare = this.clickSquare;
+  },
+  computed: {
+    
   },
 };
 </script>

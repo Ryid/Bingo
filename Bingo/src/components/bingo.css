@@ -2,6 +2,34 @@ body {
     text-align: center;
 }
 
+table {
+    margin: auto;
+}
+
+button {
+    margin: 20px auto;
+    padding: 20px;
+    width: 100px;
+    height: 60px;
+    cursor: pointer;
+    border: 0;
+    background-color: #DF2E2E;
+    color: #F6D167;
+    border-radius: 6px;
+}
+
+button:hover {
+    color: #FFF7AE
+}
+
+input {
+    padding: 0.5em 0.25em;
+    border: none;
+    font-size: 1.2em;
+    text-align: center;
+    box-shadow: 0 0 1em rgba(0, 0, 0, 0.2);
+}
+
 .square {
     width: 4em;
     height: 4em;
@@ -12,7 +40,7 @@ body {
     margin: 10px 0;
 }
 
-.bingoNum{
+.bingoNums {
     max-width: 70%;
     margin: 20px auto;
     /* border: solid 1px; */
@@ -20,7 +48,8 @@ body {
     justify-content: center;
     flex-wrap: wrap;
 }
-.bingoNum > div{
+
+.bingoNums > .bingoNum {
     /* display: flex; */
     margin: 10px;
     padding: 10px;
@@ -28,20 +57,8 @@ body {
     border-radius: 50%;
 }
 
-table {
-    margin: auto;
-}
-
-button {
-    padding: 20px;
-    width: 100px;
-    height: 60px;
-    margin: 20px auto;
-    cursor: pointer;
-}
-
 .victory {
-    margin: auto;
+    margin: 20px auto;
     width: 100px;
     height: 100px;
     border: solid 1px rgba(0, 0, 0, 0.2);

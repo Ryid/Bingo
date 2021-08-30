@@ -3,28 +3,31 @@ const check = new Router();
 const bodyparser = require('koa-bodyparser');
 const controller = require('../utils/controller');
 check.use(bodyparser()) //調用這個中間件取得前端Post的值
+const randomModel = require('../utils/bingoUtil');
+
+let getnum = new randomModel()
 
 let checkConnect = 0;
 let indices = [];
 
 // 如果數字重復則重新渲染
-function checkArray(number, array) {
-    for (let count = 0; count < array.length; count++) {
-        if (array[count] == number) {
-            return true;
-        }
-    }
-    return false;
-}
+// function checkArray(number, array) {
+//     for (let count = 0; count < array.length; count++) {
+//         if (array[count] == number) {
+//             return true;
+//         }
+//     }
+//     return false;
+// }
 
 // 檢查是否連線
 function check5(i1, i2, i3, i4, i5) {
     return (
-        checkArray(i1, indices) &&
-        checkArray(i2, indices) &&
-        checkArray(i3, indices) &&
-        checkArray(i4, indices) &&
-        checkArray(i5, indices)
+        getnum.checkArray(i1, indices) &&
+        getnum.checkArray(i2, indices) &&
+        getnum.checkArray(i3, indices) &&
+        getnum.checkArray(i4, indices) &&
+        getnum.checkArray(i5, indices)
     );
 }
 

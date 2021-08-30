@@ -2,9 +2,9 @@
   <div class="user">
     <ul>
       <li v-for="user in userList" :key="user">
-        <img src="../assets/user.svg" alt="">
-        {{user}}
-        </li>
+        <img src="../assets/user.svg" alt="" />
+        {{ user }}
+      </li>
     </ul>
   </div>
 </template>
@@ -15,7 +15,7 @@ import axios from "axios";
 export default {
   data() {
     return {
-      userList: ["123","456"],
+      userList: [],
     };
   },
   methods: {
@@ -53,7 +53,7 @@ export default {
   display: flex;
   justify-content: center;
 }
-.user li{
+.user li {
   position: relative;
   display: flex;
   font-size: 20px;
@@ -61,7 +61,7 @@ export default {
   /* justify-content: center; */
   align-items: center;
 }
-.user img{
+.user img {
   position: absolute;
   left: -20%;
   width: 22px;
@@ -71,9 +71,10 @@ export default {
 @media screen and (max-width: 1024px) {
   .user {
     position: relative;
-    margin: 20px 0;
+    margin: 20px auto;
     width: 100%;
     height: auto;
+    /* border: none; */
   }
 }
 </style>

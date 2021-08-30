@@ -6,23 +6,23 @@ const controller = require('../utils/controller');
 let netWorkNum = [];
 let getnum = new randomModel()
 let triigerGame = 0;
-let delayTime = 3;
+let delayTime = 2;
 let newtimestamp = '';
 
 // 重復的數字重新篩選
-function checkArray(number, array) {
-    for (var count = 0; count < array.length; count++) {
-        if (array[count] == number) {
-            return true;
-        }
-    }
-    return false;
-}
+// function checkArray(number, array) {
+//     for (var count = 0; count < array.length; count++) {
+//         if (array[count] == number) {
+//             return true;
+//         }
+//     }
+//     return false;
+// }
 
 // 每10秒產生數字
 const game = function gameStart() {
     setInterval(function () {
-        newtimestamp += delayTime;
+        newtimestamp = Math.round(new Date().getTime() / 1000) + delayTime;
 
         if (controller.checkWinner()) {
             clearInterval(game);
@@ -36,7 +36,7 @@ const game = function gameStart() {
         let num = getnum.getRandomInt(1, 50);
 
         // 數字重復就重run
-        while (checkArray(num, netWorkNum) && netWorkNum.length < 49) {
+        while (getnum.checkArray(num, netWorkNum) && netWorkNum.length < 49) {
             console.log('重設數字');
             num = getnum.getRandomInt(1, 50);
         }
@@ -51,7 +51,7 @@ function delayed(ctx, ms) {
     return new Promise((resolve, reject) => {
         setTimeout(function () {
             ctx.body = netWorkNum;
-            console.log(netWorkNum);
+            // console.log(netWorkNum);
             resolve();
         }, ms)
     })

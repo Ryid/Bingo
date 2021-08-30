@@ -9,6 +9,7 @@ class controller {
     }
 
     userList = new Array();
+
     // 取得使用者
     getUser() {
         return this.userList;
@@ -32,7 +33,7 @@ class controller {
     setWinnerName(user) {
         this.winner = user;
     }
-    getWinnerName(){
+    getWinnerName() {
         return this.winner;
     }
 
