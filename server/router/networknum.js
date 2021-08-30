@@ -6,7 +6,7 @@ const controller = require('../utils/controller');
 let netWorkNum = [];
 let getnum = new randomModel()
 let triigerGame = 0;
-let delayTime = 2;
+let delayTime = 10;
 let newtimestamp = '';
 
 // 重復的數字重新篩選
@@ -70,8 +70,6 @@ networknum.get('/', async (ctx) => {
     let timestamp = Math.round(new Date().getTime() / 1000);
 
     await delayed(ctx, (newtimestamp - timestamp) * 1000);
-
-
 })
 
 module.exports = networknum;

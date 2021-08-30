@@ -15,16 +15,5 @@ router.use('/check', check.routes(), check.allowedMethods());
 router.use('/generatenum',generatenum.routes(),generatenum.allowedMethods());
 router.use('/networknum',networknum.routes(),networknum.allowedMethods());
 
-// // 取得DB數據
-// router.get('/', async (ctx) => {
-//     let mydata = await new Promise((resolve, reject) => {
-//         return db.query(`select * from user`, (err, data) => {
-//             if (err) throw err;
-//             resolve(data);
-//         })
-//     })
-//     ctx.body = mydata;
-// })
-
 
 module.exports = router;

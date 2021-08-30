@@ -58,7 +58,6 @@ export default {
   display: flex;
   font-size: 20px;
   padding: 16px;
-  /* justify-content: center; */
   align-items: center;
 }
 .user img {
@@ -68,13 +67,12 @@ export default {
   line-height: 8px;
 }
 
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 800px) {
   .user {
     position: relative;
     margin: 20px auto;
-    width: 100%;
+    /* width: 100%; */
     height: auto;
-    /* border: none; */
   }
 }
 </style>

@@ -20,7 +20,7 @@
     <input
       type="text"
       placeholder="請輸入使用者名稱"
-      v-model="username"
+      v-model.trim="username"
       :disabled="disable"
     />
   </div>
@@ -109,7 +109,6 @@ export default {
 
     // 有相符數字進行標記&確認是否連線
     clickSquare(square) {
-      // console.log(square.innerHTML);
       this.getNum.filter((num) => {
         if (num == square.innerHTML) {
           square.style.backgroundColor = "crimson";
@@ -140,7 +139,6 @@ export default {
       );
     },
     checkWin() {
-      // console.log(this.indices);
       let connect = 0;
       if (this.check5(0, 1, 2, 3, 4)) {
         connect++;
@@ -193,10 +191,7 @@ export default {
   created() {
     this.makeBoard();
     window.clickSquare = this.clickSquare;
-  },
-  computed: {
-    
-  },
+  }
 };
 </script>
 
