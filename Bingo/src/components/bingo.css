@@ -12,6 +12,22 @@ body {
     margin: 10px 0;
 }
 
+.bingoNum{
+    max-width: 70%;
+    margin: 20px auto;
+    /* border: solid 1px; */
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.bingoNum > div{
+    /* display: flex; */
+    margin: 10px;
+    padding: 10px;
+    border: solid 1px;
+    border-radius: 50%;
+}
+
 table {
     margin: auto;
 }

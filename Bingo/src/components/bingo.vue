@@ -10,7 +10,11 @@
     >
       遊戲開始
     </button>
-    <div>{{ getNum }}</div>
+    <div class="bingoNum">
+      <div v-for="num in getNum" :key="num">
+        {{ `${num < 10 ? "0" + num : num}`}}
+      </div>
+    </div>
     <div class="victory" v-if="checkConnect > 1" @click="winner()">CLICK</div>
     <input
       type="text"
@@ -33,9 +37,9 @@ export default {
       cols: 5,
       myNums: "",
       getNum: [
-        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-        21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38,
-        39, 40, 41, 42, 43, 44, 45,
+        // 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+        // 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38,
+        // 39, 40, 41, 42, 43, 44, 45,
       ],
       indices: [],
       checkConnect: 0,
@@ -52,7 +56,7 @@ export default {
       }
     },
     async getServerNum() {
-      if (this.username !== "") {
+      if (this.username !== "" && !this.getNum.includes("獲勝者")) {
         await axios
           .get("http://localhost:3000/networknum")
           .then((res) => (this.getNum = res.data))
@@ -175,10 +179,10 @@ export default {
     // 獲勝
     winner() {
       // alert("winner!");
-      axios.post('http://localhost:3000/check',{
+      axios.post("http://localhost:3000/check", {
         username: this.username,
-        indices: this.indices
-      })
+        indices: this.indices,
+      });
     },
   },
   created() {

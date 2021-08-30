@@ -6,6 +6,8 @@ const controller = require('../utils/controller');
 let netWorkNum = [];
 let getnum = new randomModel()
 let triigerGame = 0;
+let delayTime = 3;
+let newtimestamp = '';
 
 // 重復的數字重新篩選
 function checkArray(number, array) {
@@ -20,6 +22,8 @@ function checkArray(number, array) {
 // 每10秒產生數字
 const game = function gameStart() {
     setInterval(function () {
+        newtimestamp += delayTime;
+
         if (controller.checkWinner()) {
             clearInterval(game);
             let name = controller.getWinnerName();
@@ -27,14 +31,19 @@ const game = function gameStart() {
             return true;
         }
         if (netWorkNum.length >= 50) return;
+
+        // 產生1~50數字
         let num = getnum.getRandomInt(1, 50);
+
+        // 數字重復就重run
         while (checkArray(num, netWorkNum) && netWorkNum.length < 49) {
             console.log('重設數字');
             num = getnum.getRandomInt(1, 50);
         }
+        
         netWorkNum.push(num);
         console.log(netWorkNum);
-    }, 5000)
+    }, delayTime * 1000)
 }
 
 // 過X秒後給client陣列
@@ -54,11 +63,14 @@ networknum.get('/', async (ctx) => {
     if (triigerGame == 0) {
         game();
         triigerGame += 1;
+        newtimestamp = Math.round(new Date().getTime() / 1000) + delayTime;
     }
-    await delayed(ctx, 5000);
-    // let rel=await Promise.race([game(),delayed(ctx,5000)])
-    // let rel=await Promise.race([game,delayed])
-    // ctx.body=rel;
+
+    // 獲取玩家當前時間
+    let timestamp = Math.round(new Date().getTime() / 1000);
+
+    await delayed(ctx, (newtimestamp - timestamp) * 1000);
+
 
 })
 
