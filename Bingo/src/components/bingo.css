@@ -7,10 +7,8 @@ table {
 }
 
 button {
-    margin: 20px auto;
+    margin: 20px 10px;
     padding: 20px;
-    width: 100px;
-    height: 60px;
     cursor: pointer;
     border: 0;
     background-color: #DF2E2E;

@@ -6,6 +6,8 @@ class controller {
         controller.instance = this;
         this.win = false;
         this.winner = '';
+        this.now = 0;
+        this.write= false;
     }
 
     userList = new Array();
@@ -33,8 +35,37 @@ class controller {
     setWinnerName(user) {
         this.winner = user;
     }
+    // 得到贏家名稱
     getWinnerName() {
         return this.winner;
+    }
+
+    // 判定目前是誰要輸入數字
+    nowGamer() {
+        return this.userList[this.now]
+    }
+    // 輪到下一位使用者
+    nextGamer() {
+        if (this.now < this.userList.length - 1) {
+            return this.now += 1;
+        } else {
+            return this.now = parseInt(0);
+        }
+    }
+    // 放入數字
+    setNumber(num){
+        return this.num=num;
+    }
+    // 取出數字
+    getNumber(){
+        return this.num;
+    }
+    // 判斷是否要寫入數字
+    checkWrite(){
+        return this.write;
+    }
+    setWrite(){
+        return !this.write;      
     }
 
 }

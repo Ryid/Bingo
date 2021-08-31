@@ -9,11 +9,28 @@
       "
       v-if="!disable"
     >
-      遊戲開始
+      遊戲開始<br />(自動生成亂數)
     </button>
+    <button
+      @click="
+        postUser();
+        getUserNum();
+      "
+      v-if="!disable"
+    >
+      遊戲開始<br />(玩家選擇號碼)
+    </button>
+    <div class="sendnum">
+      <!-- <input type="text" placeholder="輸入想要的數字"> -->
+      <!-- <button>送出</button> -->
+    </div>
     <div class="bingoNums">
-      <div v-for="num in getNum" :key="num" :class="{ bingoNum : typeof getNum=='object'}">
-        {{ `${num < 10 && typeof num=='number' ? "0" + num : num}` }}
+      <div
+        v-for="num in getNum"
+        :key="num"
+        :class="{ bingoNum: typeof getNum == 'object' }"
+      >
+        {{ `${num < 10 && typeof num == "number" ? "0" + num : num}` }}
       </div>
     </div>
     <div class="victory" v-if="checkConnect > 1" @click="winner()">CLICK</div>
@@ -37,11 +54,7 @@ export default {
       rows: 5,
       cols: 5,
       myNums: "",
-      getNum: [
-        // 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-        // 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38,
-        // 39, 40, 41, 42, 43, 44, 45,
-      ],
+      getNum: [],
       indices: [],
       checkConnect: 0,
     };
@@ -56,6 +69,7 @@ export default {
         console.log(err);
       }
     },
+    // 亂數模式
     async getServerNum() {
       if (
         this.username !== "" &&
@@ -68,6 +82,14 @@ export default {
           .catch((err) => console.log(err));
         await this.getServerNum();
       }
+    },
+    // 玩家選擇模式
+    async getUserNum() {
+      axios
+        .get("http://localhost:3000/playerchoice")
+        .then((res) => (this.getNum = res.data))
+        .catch((err) => console.log(err));
+      await this.getUserNum();
     },
 
     // 傳送使用者資料
@@ -191,7 +213,7 @@ export default {
   created() {
     this.makeBoard();
     window.clickSquare = this.clickSquare;
-  }
+  },
 };
 </script>
 
