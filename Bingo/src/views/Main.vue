@@ -1,27 +1,29 @@
 <template>
-  
   <div class="game">
     <!-- <div class="user"></div> -->
-    <userlist />
-    <bingo />
-    
+    <userlist :model="model" />
+    <bingo @nowmodel="getmodel" />
   </div>
 </template>
 
 <script>
 import userlist from "@/components/userlist.vue";
 import bingo from "@/components/bingo.vue";
-import axios from 'axios'
+import axios from "axios";
 
 export default {
   data() {
     return {
       username: "",
       disable: false,
+      model: "",
     };
   },
-  methods:{
-      
+  methods: {
+    getmodel(model) {
+      this.model = model;
+      console.log(this.model);
+    },
   },
   components: {
     userlist,

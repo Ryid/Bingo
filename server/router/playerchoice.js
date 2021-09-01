@@ -7,10 +7,8 @@ const EventEmitter = require('events');
 
 let dispatcher = new EventEmitter();
 let netWorkNum = [];
-let getnum = new randomModel()
 let triigerGame = 0;
 let delayTime = 1;
-let timer = null;
 
 
 const game = function gameStart() {
@@ -34,21 +32,30 @@ const game = function gameStart() {
 function delayed(ctx) {
     return new Promise((resolve, rejects) => {
         dispatcher.once('update', function () {
-            resolve(netWorkNum);
+            resolve({
+                array: netWorkNum,
+                status: 'Update'
+            });
         })
     })
 }
 
+// 時間到沒新資料執行
 function timeout() {
     return new Promise((resolve, reject) => {
         timer = setTimeout(() => {
             console.log('timeout')
-            resolve(netWorkNum);
+            resolve({
+                array: netWorkNum,
+                status: 'TimeOut'
+            });
         }, 10000)
     });
 }
 
 playerchoice.get('/', async (ctx) => {
+    let timer = null;
+
     if (triigerGame == 0) {
         game();
         triigerGame += 1;

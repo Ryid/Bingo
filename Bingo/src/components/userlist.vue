@@ -34,6 +34,7 @@ export default {
   unmounted() {
     clearInterval(this.timer);
   },
+  props:['model']
 };
 </script>
 

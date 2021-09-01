@@ -8,8 +8,8 @@ let dispatcher = new EventEmitter();
 let netWorkNum = [];
 let getnum = new randomModel()
 let triigerGame = 0;
-let delayTime = 3;
-let timer = null;
+let delayTime = 8;
+
 
 // 每10秒產生數字
 const game = function gameStart() {
@@ -41,20 +41,29 @@ const game = function gameStart() {
 function delayed(ctx) {
     return new Promise((resolve, reject) => {
         dispatcher.once('update', function () {
-            resolve(netWorkNum);
+            resolve({
+                array: netWorkNum,
+                status: 'Update'
+            });
         });
     })
 }
+
+// 時間到沒新資料執行
 function timeout() {
     return new Promise((resolve, reject) => {
         timer = setTimeout(() => {
             console.log('timeout')
-            resolve(netWorkNum);
-        }, 15000)
+            resolve({
+                array: netWorkNum,
+                status: 'TimeOut'
+            });
+        }, 4000)
     });
 }
 
 networknum.get('/', async (ctx) => {
+    let timer = null;
     // 在觸發api後開始每10秒發送隨機數字
     if (triigerGame == 0) {
         game();
@@ -68,13 +77,3 @@ networknum.get('/', async (ctx) => {
 
 module.exports = networknum;
 
-
-// 重復的數字重新篩選
-// function checkArray(number, array) {
-//     for (var count = 0; count < array.length; count++) {
-//         if (array[count] == number) {
-//             return true;
-//         }
-//     }
-//     return false;
-// }

@@ -84,7 +84,10 @@ export default {
       ) {
         await axios
           .get("http://localhost:3000/networknum")
-          .then((res) => (this.getNum = res.data))
+          .then((res) => {
+            this.getNum = res.data.array;
+            console.log(res.data.status);
+          })
           .catch((err) => console.log(err));
         await this.getServerNum();
       }
@@ -98,7 +101,10 @@ export default {
       ) {
         await axios
           .get("http://localhost:3000/playerchoice")
-          .then((res) => (this.getNum = res.data))
+          .then((res) => {
+            this.getNum = res.data.array;
+            console.log(res.data.status);
+          })
           .catch((err) => console.log(err));
         await this.getUserNum();
       }
@@ -108,10 +114,12 @@ export default {
     postUser(model) {
       if (this.username !== "") {
         this.model = model;
+        this.$emit('nowmodel',model)
+
         axios
           .post("http://localhost:3000/sendUser", {
             username: this.username,
-            model: model
+            model: model,
           })
           .then((res) => console.log(res))
           .catch((err) => console.log(err));
@@ -231,9 +239,14 @@ export default {
       axios.post("http://localhost:3000/check", {
         username: this.username,
         indices: this.indices,
-        model: this.model
+        model: this.model,
       });
     },
+
+    // 傳目前是什麼model到main.vue
+    nowModel(){
+      this.$emit('nowModel',this.model)
+    }
   },
   created() {
     this.makeBoard();
