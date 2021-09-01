@@ -10,15 +10,6 @@ let getnum = new randomModel()
 let checkConnect = 0;
 let indices = [];
 
-// 如果數字重復則重新渲染
-// function checkArray(number, array) {
-//     for (let count = 0; count < array.length; count++) {
-//         if (array[count] == number) {
-//             return true;
-//         }
-//     }
-//     return false;
-// }
 
 // 檢查是否連線
 function check5(i1, i2, i3, i4, i5) {
@@ -77,12 +68,16 @@ check.post('/', async (ctx) => {
     console.log(ctx.request.body);
     let user = ctx.request.body.username;
     indices = ctx.request.body.indices;
+    let model = ctx.request.body.model;
 
     checkWin();
 
-    if (checkConnect > 1) {
+    if (checkConnect > 1 && model == 'generate') {
         controller.getWin();
         controller.setWinnerName(user);
+    } else if (checkConnect > 1 && model == 'playerchoice') {
+        controller.getWinPC();
+        controller.setWinnerNamePC(user);
     }
 
     ctx.body = 'success';

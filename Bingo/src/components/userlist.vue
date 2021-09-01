@@ -28,7 +28,6 @@ export default {
   },
   created() {
     this.timer = setInterval(() => {
-      // this.check();
       this.getUser();
     }, 5000);
   },

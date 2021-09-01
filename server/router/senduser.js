@@ -9,11 +9,15 @@ senduser.use(bodyparser());
 senduser.post('/', async (ctx) => {
     console.log(ctx.request.body);
     let username = ctx.request.body.username;
+    let model = ctx.request.body.model;
 
-    console.log(username);
+    console.log(username, model);
 
-    if (username != '') {
+    if (username != '' && model == 'generate') {
         controller.postUser(username);
+        ctx.body = username;
+    } else if (username != '' && model == 'playerchoice') {
+        controller.postUserPC(username);
         ctx.body = username;
     }
 })

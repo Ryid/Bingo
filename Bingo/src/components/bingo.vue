@@ -4,7 +4,7 @@
     <table id="board"></table>
     <button
       @click="
-        postUser();
+        postUser('generate');
         getServerNum();
       "
       v-if="!disable"
@@ -13,7 +13,7 @@
     </button>
     <button
       @click="
-        postUser();
+        postUser('playerchoice');
         getUserNum();
       "
       v-if="!disable"
@@ -21,8 +21,12 @@
       遊戲開始<br />(玩家選擇號碼)
     </button>
     <div class="sendnum">
-      <!-- <input type="text" placeholder="輸入想要的數字"> -->
-      <!-- <button>送出</button> -->
+      <input
+        type="text"
+        placeholder="輸入想要的數字"
+        v-model.number="playerChiose"
+      />
+      <button @click="sendPlayerNum()">送出</button>
     </div>
     <div class="bingoNums">
       <div
@@ -57,6 +61,8 @@ export default {
       getNum: [],
       indices: [],
       checkConnect: 0,
+      playerChiose: "",
+      model: "",
     };
   },
   methods: {
@@ -85,19 +91,27 @@ export default {
     },
     // 玩家選擇模式
     async getUserNum() {
-      axios
-        .get("http://localhost:3000/playerchoice")
-        .then((res) => (this.getNum = res.data))
-        .catch((err) => console.log(err));
-      await this.getUserNum();
+      if (
+        this.username !== "" &&
+        !this.getNum.includes("獲勝者") &&
+        this.getNum.length < 50
+      ) {
+        await axios
+          .get("http://localhost:3000/playerchoice")
+          .then((res) => (this.getNum = res.data))
+          .catch((err) => console.log(err));
+        await this.getUserNum();
+      }
     },
 
     // 傳送使用者資料
-    postUser() {
+    postUser(model) {
       if (this.username !== "") {
+        this.model = model;
         axios
           .post("http://localhost:3000/sendUser", {
             username: this.username,
+            model: model
           })
           .then((res) => console.log(res))
           .catch((err) => console.log(err));
@@ -121,12 +135,22 @@ export default {
           cell.setAttribute("class", "square");
           cell.innerHTML = this.myNums[row * 5 + col];
           cell.onclick = function () {
-            // console.log(this)
             clickSquare(this);
           };
           cell.index = row * 5 + col;
         }
       }
+    },
+
+    // 玩家選擇號碼傳送&驗證
+    sendPlayerNum() {
+      axios
+        .post("http://localhost:3000/checkround", {
+          username: this.username,
+          number: this.playerChiose,
+        })
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
     },
 
     // 有相符數字進行標記&確認是否連線
@@ -207,6 +231,7 @@ export default {
       axios.post("http://localhost:3000/check", {
         username: this.username,
         indices: this.indices,
+        model: this.model
       });
     },
   },

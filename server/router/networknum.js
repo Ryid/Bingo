@@ -8,8 +8,8 @@ let dispatcher = new EventEmitter();
 let netWorkNum = [];
 let getnum = new randomModel()
 let triigerGame = 0;
-let delayTime = 10;
-
+let delayTime = 3;
+let timer = null;
 
 // 每10秒產生數字
 const game = function gameStart() {
@@ -29,8 +29,8 @@ const game = function gameStart() {
             console.log('重設數字');
             num = getnum.getRandomInt(1, 50);
         }
-        console.log(netWorkNum);
         netWorkNum.push(num);
+        console.log(netWorkNum);
 
         // 通知所有客戶端資料有更新
         dispatcher.emit('update');
@@ -40,11 +40,18 @@ const game = function gameStart() {
 // 過X秒後給client陣列
 function delayed(ctx) {
     return new Promise((resolve, reject) => {
-            dispatcher.once('update', function () {
+        dispatcher.once('update', function () {
             resolve(netWorkNum);
-            reject()
         });
     })
+}
+function timeout() {
+    return new Promise((resolve, reject) => {
+        timer = setTimeout(() => {
+            console.log('timeout')
+            resolve(netWorkNum);
+        }, 15000)
+    });
 }
 
 networknum.get('/', async (ctx) => {
@@ -52,10 +59,11 @@ networknum.get('/', async (ctx) => {
     if (triigerGame == 0) {
         game();
         triigerGame += 1;
-        // newtimestamp = Math.round(new Date().getTime() / 1000) + delayTime;
     }
 
-    ctx.body = await delayed(ctx);
+    // ctx.body = await delayed(ctx);
+    clearTimeout(timer);
+    ctx.body = await Promise.race([delayed(), timeout()]);
 })
 
 module.exports = networknum;
