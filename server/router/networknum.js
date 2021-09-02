@@ -7,7 +7,7 @@ const EventEmitter = require('events');
 let dispatcher = new EventEmitter();
 let netWorkNum = [];
 let triigerGame = 0;
-let delayTime = 1;
+let delayTime = 5;
 let num=0;
 let bingoNum=[];
 let bingoArray=[];
@@ -54,7 +54,7 @@ const game = function gameStart() {
 }
 
 // 過X秒後給client陣列
-function delayed(ctx) {
+function delayed() {
     return new Promise((resolve, reject) => {
         dispatcher.once('update', function () {
             resolve({
@@ -68,12 +68,12 @@ function delayed(ctx) {
 // 時間到沒新資料執行
 function timeout() {
     return new Promise((resolve, reject) => {
-        timer = setTimeout(() => {
+        setTimeout(() => {
             resolve({
                 array: netWorkNum,
                 status: 'TimeOut'
             });
-        }, 6000)
+        }, 3000)
     });
 }
 

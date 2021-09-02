@@ -15,7 +15,6 @@
       @click="
         postUser('playerchoice');
         getUserNum();
-        disableInput = true;
       "
       v-if="!disable"
     >
@@ -118,6 +117,9 @@ export default {
     // 傳送使用者資料
     postUser(model) {
       if (this.username !== "") {
+        if (model == "playerchoice") {
+          this.disableInput = true;
+        }
         this.model = model;
         this.$emit("nowmodel", model);
 

@@ -31,7 +31,7 @@ const game = function gameStart() {
     }, delayTime * 1000)
 }
 
-function delayed(ctx) {
+function delayed() {
     return new Promise((resolve, rejects) => {
         dispatcher.once('update', function () {
             resolve({
@@ -55,7 +55,7 @@ function timeout() {
 }
 
 playerchoice.get('/', async (ctx) => {
-    let timer = null;
+    // let timer = null;
 
     if (triigerGame == 0) {
         game();
@@ -64,7 +64,6 @@ playerchoice.get('/', async (ctx) => {
 
     // clearTimeout(timer);
     ctx.body = await Promise.race([delayed(), timeout()]);
-    // emitter.setMaxListeners(0)
 })
 
 
