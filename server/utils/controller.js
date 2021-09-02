@@ -17,6 +17,7 @@ class controller {
 
     userList = new Array();
     userListPC = new Array();
+    pcarray = new Array();
 
     // 取得使用者
     getUser() {
@@ -74,7 +75,7 @@ class controller {
         return this.winnerPC;
     }
 
-    // 判定目前是誰要輸入數字
+    // 判定目前誰要輸入數字
     nowGamer() {
         return this.userListPC[this.now]
     }
@@ -100,6 +101,14 @@ class controller {
     }
     setWrite() {
         return this.write = !this.write;
+    }
+
+    // playcohice模式陣列
+    pcArray(){
+        return this.pcarray;
+    }
+    setPcArray(num){
+        return this.pcarray.push(num);
     }
 
 }

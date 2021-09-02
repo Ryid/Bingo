@@ -6,33 +6,12 @@ const EventEmitter = require('events');
 
 let dispatcher = new EventEmitter();
 let netWorkNum = [];
+let getnum = new randomModel()
 let triigerGame = 0;
-let delayTime = 1;
-let num=0;
-let bingoNum=[];
-let bingoArray=[];
-
-// 產生1~50陣列
-function pushArray(){
-	for(let i=1;i<=50;i++){
-  	bingoNum.push(i);
-  }
-}
-
-// 陣列洗牌
-function shuffle(arr) {
-    let i, j, temp;
-    for (i = arr.length - 1; i > 0; i--) {
-        j = Math.floor(Math.random() * (i + 1));
-        temp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = temp;
-    }
-    return arr;
-};
+let delayTime = 8;
 
 
-// 每10秒放入數字
+// 每10秒產生數字
 const game = function gameStart() {
     setInterval(function () {
         if (controller.checkWinner()) {
@@ -42,12 +21,17 @@ const game = function gameStart() {
             return dispatcher.emit('update');
         }
 
-        if(netWorkNum.length > 49) return;
+        // 產生1~50數字
+        let num = getnum.getRandomInt(1, 50);
 
-        netWorkNum.push(bingoArray[num]);
+        // 數字重復就重run
+        while (getnum.checkArray(num, netWorkNum) && netWorkNum.length < 49) {
+            console.log('重設數字');
+            num = getnum.getRandomInt(1, 50);
+        }
+        netWorkNum.push(num);
         console.log(netWorkNum);
-        num++;
-        
+
         // 通知所有客戶端資料有更新
         dispatcher.emit('update');
     }, delayTime * 1000)
@@ -69,27 +53,26 @@ function delayed(ctx) {
 function timeout() {
     return new Promise((resolve, reject) => {
         timer = setTimeout(() => {
+            console.log('timeout')
             resolve({
                 array: netWorkNum,
                 status: 'TimeOut'
             });
-        }, 6000)
+        }, 4000)
     });
 }
 
 networknum.get('/', async (ctx) => {
-    // let timer = null;
+    let timer = null;
     // 在觸發api後開始每10秒發送隨機數字
     if (triigerGame == 0) {
-        pushArray();
-        bingoArray=shuffle(bingoNum);
         game();
         triigerGame += 1;
     }
 
-    // clearTimeout(timer);
+    // ctx.body = await delayed(ctx);
+    clearTimeout(timer);
     ctx.body = await Promise.race([delayed(), timeout()]);
-
 })
 
 module.exports = networknum;

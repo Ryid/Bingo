@@ -9,6 +9,7 @@ let dispatcher = new EventEmitter();
 let netWorkNum = [];
 let triigerGame = 0;
 let delayTime = 1;
+dispatcher.setMaxListeners(100)
 
 
 const game = function gameStart() {
@@ -23,6 +24,7 @@ const game = function gameStart() {
         if (controller.checkWrite()) {
             console.log(controller.getNumber());
             netWorkNum.push(controller.getNumber());
+            controller.setPcArray(controller.getNumber());
             controller.setWrite();
             dispatcher.emit('update');
         }
@@ -44,7 +46,6 @@ function delayed(ctx) {
 function timeout() {
     return new Promise((resolve, reject) => {
         timer = setTimeout(() => {
-            console.log('timeout')
             resolve({
                 array: netWorkNum,
                 status: 'TimeOut'
@@ -61,8 +62,9 @@ playerchoice.get('/', async (ctx) => {
         triigerGame += 1;
     }
 
-    clearTimeout(timer);
+    // clearTimeout(timer);
     ctx.body = await Promise.race([delayed(), timeout()]);
+    // emitter.setMaxListeners(0)
 })
 
 

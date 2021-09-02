@@ -21,7 +21,9 @@ export default {
   methods: {
     getUser() {
       axios
-        .get("http://localhost:3000/getUser")
+        .post("http://localhost:3000/getUser",{
+          model: this.model
+        })
         .then((res) => (this.userList = res.data))
         .catch((err) => console.log(err));
     },

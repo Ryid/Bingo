@@ -15,16 +15,18 @@
       @click="
         postUser('playerchoice');
         getUserNum();
+        disableInput = true;
       "
       v-if="!disable"
     >
       遊戲開始<br />(玩家選擇號碼)
     </button>
-    <div class="sendnum">
+    <div class="sendnum" v-if="disableInput">
       <input
         type="text"
         placeholder="輸入想要的數字"
         v-model.number="playerChiose"
+        @keyup.enter="sendPlayerNum()"
       />
       <button @click="sendPlayerNum()">送出</button>
     </div>
@@ -55,6 +57,7 @@ export default {
     return {
       username: "",
       disable: false,
+      disableInput: false,
       rows: 5,
       cols: 5,
       myNums: "",
@@ -75,6 +78,7 @@ export default {
         console.log(err);
       }
     },
+
     // 亂數模式
     async getServerNum() {
       if (
@@ -92,6 +96,7 @@ export default {
         await this.getServerNum();
       }
     },
+
     // 玩家選擇模式
     async getUserNum() {
       if (
@@ -114,7 +119,7 @@ export default {
     postUser(model) {
       if (this.username !== "") {
         this.model = model;
-        this.$emit('nowmodel',model)
+        this.$emit("nowmodel", model);
 
         axios
           .post("http://localhost:3000/sendUser", {
@@ -244,9 +249,9 @@ export default {
     },
 
     // 傳目前是什麼model到main.vue
-    nowModel(){
-      this.$emit('nowModel',this.model)
-    }
+    nowModel() {
+      this.$emit("nowModel", this.model);
+    },
   },
   created() {
     this.makeBoard();
