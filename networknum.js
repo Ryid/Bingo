@@ -63,7 +63,7 @@ function timeout() {
 }
 
 networknum.get('/', async (ctx) => {
-    let timer = null;
+    // let timer = null;
     // 在觸發api後開始每10秒發送隨機數字
     if (triigerGame == 0) {
         game();
@@ -71,7 +71,7 @@ networknum.get('/', async (ctx) => {
     }
 
     // ctx.body = await delayed(ctx);
-    clearTimeout(timer);
+    // clearTimeout(timer);
     ctx.body = await Promise.race([delayed(), timeout()]);
 })
 
