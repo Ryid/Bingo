@@ -106,7 +106,9 @@ export default {
         this.getNum.length < 50
       ) {
         await axios
-          .get("http://localhost:3000/playerchoice")
+          .post("http://localhost:3000/playerchoice",{
+            clientArr: this.getNum
+          })
           .then((res) => {
             this.getNum = res.data.array;
             console.log(res.data.status);

@@ -1,9 +1,10 @@
 const Router = require('koa-router');
 const playerchoice = new Router();
-const randomModel = require('../utils/bingoUtil');
 const controller = require('../utils/controller');
 const EventEmitter = require('events');
+const bodyparser = require('koa-bodyparser');
 
+playerchoice.use(bodyparser());
 
 let dispatcher = new EventEmitter();
 let netWorkNum = [];
@@ -54,12 +55,20 @@ function timeout() {
     });
 }
 
-playerchoice.get('/', async (ctx) => {
-    // let timer = null;
+playerchoice.post('/', async (ctx) => {
+    let clientArray = ctx.request.body.clientArr;
 
     if (triigerGame == 0) {
         game();
         triigerGame += 1;
+    }
+
+    // 驗證client跟Server資料不同步的話，更新client資料
+    if (JSON.stringify(netWorkNum) != JSON.stringify(clientArray)) {
+        return ctx.body = {
+            array: netWorkNum,
+            status: '資料不同步進行更新'
+        }
     }
 
     // clearTimeout(timer);
